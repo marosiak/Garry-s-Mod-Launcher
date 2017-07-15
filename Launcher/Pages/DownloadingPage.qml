@@ -6,14 +6,28 @@ import QtGraphicalEffects 1.0
 Page {
     id: page
     anchors.fill: parent
+    signal cancelClicked
+    property string currentDownloading: "css.zip"
+    property int progressValue: 0
+    property int progressFrom: 0
+    property int progressTo: 100
     SwipeView {
         id: view
-        currentIndex: 1
+        currentIndex: 0
         width: parent.width
         height: parent.height-rectangle.height
         clip: true
         anchors.horizontalCenter: parent.horizontalCenter
-
+        Timer {
+            interval: 6000; running: true; repeat: true
+            onTriggered: {
+                if(view.currentIndex == view.count-1){
+                    view.currentIndex = 0
+                } else {
+                    view.currentIndex += 1
+                }
+            }
+        }
         Image {
             source: "../Background/0.jpg"
         }
@@ -32,7 +46,7 @@ Page {
     }
     Text {
         color: "#ffffff"
-        text: "Downloading css.zip "+progressBar.value+"%"
+        text: "Downloading "+page.currentDownloading+" "+progressBar.value+"%"
         anchors.top: parent.top
         anchors.topMargin: 12
         anchors.right: parent.right
@@ -53,13 +67,9 @@ Page {
         delegate: Rectangle {
             implicitWidth: 8
             implicitHeight: 8
-
-            //radius: width / 2
             radius: 0
             color: "#21be2b"
-
             opacity: index === indicator.currentIndex ? 0.95 : pressed ? 0.7 : 0.45
-
             Behavior on opacity {
                 OpacityAnimator {
                     duration: 100
@@ -94,14 +104,15 @@ Page {
                 id: progressBar
                 width: parent.width-125
                 anchors.verticalCenter: parent.verticalCenter
-                value: 50
-                from: 0
-                to: 100
+                value: page.progressValue
+                from: page.progressFrom
+                to: page.progressTo
             }
             Button {
                 text: qsTr("Cancel")
                 anchors.verticalCenter: parent.verticalCenter
                 width: 100
+                onClicked: page.cancelClicked()
             }
         }
     }

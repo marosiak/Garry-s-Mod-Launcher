@@ -2,7 +2,15 @@ QT += qml quick network
 
 CONFIG += c++11
 
-SOURCES += main.cpp
+win32{
+LIBS += -LC:\OpenSSL-Win32_nonlight_great -leay32 -lssl32
+#    LIBS += -LC:/OpenSSL-Win32_nonlight/lib/MinGW
+#    INCLUDEPATH += C:/OpenSSL-Win32_nonlight/include/openssl
+}
+
+
+SOURCES += main.cpp \
+    Class/downloader.cpp
 
 RESOURCES += qml.qrc
 
@@ -27,3 +35,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    Class/downloader.h
