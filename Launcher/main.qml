@@ -5,6 +5,7 @@ import QtQuick.Window 2.0
 import QtQuick.Dialogs 1.2
 import Qt.labs.platform 1.0
 import "./Pages/"
+import "./Components"
 
 Item {
     ApplicationWindow {
@@ -17,7 +18,8 @@ Item {
         minimumHeight : height
         minimumWidth : width
         title: qsTr("Select")
-        function nextDownload(typ){
+
+        function nextDownload(typ) {
             switch(typ) {
             case "css":
                 connection.cssDownloaded = true;
@@ -46,14 +48,14 @@ Item {
                 everythingDone = false
             } else { everythingDone = true }
             if(everythingDone == true) {
-                console.log("quest done")
+                unzippingWindow.show()
             }
         }
         Timer {
             property string typ
             id: downloadTimer
             interval: 1000; running: false; repeat: false
-            onTriggered: nextDownload(typ)
+            onTriggered: root.nextDownload(typ)
         }
         Connections {
             id: connection
@@ -62,7 +64,6 @@ Item {
             property bool hl2ep1Downloaded:false
             property bool hl2ep2Downloaded:false
             onProgressRecived: {
-                console.log(curr+"/"+max)
 
                 downloadingPage.progressFrom = 0
                 downloadingPage.progressTo = 100
@@ -70,19 +71,24 @@ Item {
                 downloadingPage.currentDownloading = contentName
             }
             onDownloadingFinished: {
-                console.log("finished "+typ)
                 downloadTimer.typ = typ
                 downloadTimer.start();
             }
         }
         MainPage {
             id: mainPage
+            onPlayClicked: {
+                lastScreen.visible = true
+                root.visible = false
+            }
+
             onInstallClicked: {
                 downloader.setSteamFolder(folderDialog.currentFolder)
                 secondWindow.show()
+                downloadingPage.restartSwipe()
                 root.hide()
                 if (mainPage.wantToInstallCss){
-                    downloader.startDownloading("css");
+                    downloader.start("css");
                 }
                 else if (mainPage.wantToInstallHl2ep1){
                     downloader.startDownloading("hl2ep1");
@@ -111,15 +117,23 @@ Item {
             id: downloadingPage
         }
     }
+    Unzipping {
+        id: unzippingWindow
+        path: folderDialog.currentFolder
+        onWorkDone: {
+            lastScreen.visible = true
+            lastScreen.headerLabel = "Everything is done, you can close the window and play the game, I suggest you to join any server from below"
+            unzippingWindow.visible = false
+            secondWindow.visible = false
+        }
+    }
+    LastScreen {
+        id: lastScreen
+    }
+
     FolderDialog {
         id: folderDialog
         title: qsTr("Please choose a dir")
         currentFolder: "file:///C:/Program Files (x86)/Steam"
-        onAccepted: {
-            console.log("You chose: " + folderDialog.folder)
-        }
-        onRejected: {
-            console.log("Canceled")
-        }
     }
 }

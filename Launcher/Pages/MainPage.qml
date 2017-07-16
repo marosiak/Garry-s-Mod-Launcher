@@ -8,9 +8,30 @@ Page {
     anchors.fill: parent
     signal installClicked
     signal setDirClicked
+    signal playClicked
     property bool wantToInstallCss: cb1.checked
     property bool wantToInstallHl2ep1: cb2.checked
     property bool wantToInstallHl2ep2: cb3.checked
+    Component.onCompleted: {
+        start()
+    }
+    function start(){
+        unzipper.setSteamPath("file:///C:/Program Files (x86)/Steam");
+        if(unzipper.isInstalled("css")){
+            cb1.enabled = false
+            cb1.checked = false
+        }
+        if(unzipper.isInstalled("hl2ep1")){
+            cb2.enabled = false
+            cb2.checked = false
+        }
+        if(unzipper.isInstalled("hl2ep2")){
+            cb3.enabled = false
+            cb3.checked = false
+        }
+
+    }
+
     function isSomethingChecked(){
         if (wantToInstallCss == true || wantToInstallHl2ep1 == true || wantToInstallHl2ep2 == true) {
             installButton.visible = true
@@ -60,6 +81,10 @@ Page {
             id: installButton
             text: "Install"
             onClicked: a.installClicked()
+        }
+        Button {
+            text: "Play"
+            onClicked: a.playClicked()
         }
         Button {
             id: button

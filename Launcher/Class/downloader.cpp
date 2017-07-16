@@ -10,15 +10,15 @@ void Downloader::startDownloading(QString typ){
     QString u;
     QString name;
     if (typ == "css"){
-        u = "http://d740fw1da.c0.pl/java.zip";
+        u = "http://7grid.net/gmod/css.zip";
         name = "css";
     }
     if (typ == "hl2ep1"){
-        u = "http://d740fw1da.c0.pl/java.zip";
+        u = "http://7grid.net/gmod/hl2ep1.zip";
         name = "hl2ep1";
     }
     if (typ == "hl2ep2"){
-        u = "http://d740fw1da.c0.pl/java.zip";
+        u = "http://7grid.net/gmod/hl2ep2.zip";
         name = "hl2ep2";
     }
     currDownloading = name;
@@ -57,18 +57,15 @@ void Downloader::networkReplyProgress(qint64 curr, qint64 max){
     emit progressRecived(curr, max, currDownloading);
 }
 
-//Getters and setters
-QString Downloader::getSteamFolder() const{ return steamFolder; }
-void Downloader::setDownloadName(const QString &value) { downloadName = value; }
-
 void Downloader::downloadingFinishedSlot(){
     eventLoop.exit();
     emit downloadingFinished(currDownloading);
 }
 
-QString Downloader::getCurrDownloading() const
-{
-    return currDownloading;
-}
+//Getters and setters
+QString Downloader::getSteamFolder() const{ return steamFolder; }
+QString Downloader::getCurrDownloading() const{ return currDownloading;}
 void Downloader::setSteamFolder(const QString &value){ steamFolder = value; }
 void Downloader::setDownloadUrl(const QString &value){ downloadUrl = value; }
+void Downloader::setDownloadName(const QString &value) { downloadName = value; }
+

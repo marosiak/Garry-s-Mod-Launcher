@@ -4,13 +4,16 @@ CONFIG += c++11
 
 win32{
 LIBS += -LC:\OpenSSL-Win32_nonlight_great -leay32 -lssl32
-#    LIBS += -LC:/OpenSSL-Win32_nonlight/lib/MinGW
-#    INCLUDEPATH += C:/OpenSSL-Win32_nonlight/include/openssl
+INCLUDEPATH += C:/Qt/zlib-1.2.11
+LIBS += -LC:/Qt/zlib-1.2.11 -lz
+INCLUDEPATH += C:/Qt/quazip-0.7/quazip
+LIBS += -LC:/Qt/quazip-0.7/quazip/release -lquazip
 }
 
-
+RC_ICONS = icon.ico
 SOURCES += main.cpp \
-    Class/downloader.cpp
+    Class/downloader.cpp \
+    Class/unzipper.cpp
 
 RESOURCES += qml.qrc
 
@@ -37,4 +40,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    Class/downloader.h
+    Class/downloader.h \
+    Class/unzipper.h

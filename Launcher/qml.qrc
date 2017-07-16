@@ -9,5 +9,10 @@
         <file>Background/4.jpg</file>
         <file>Pages/DownloadingPage.qml</file>
         <file>Pages/MainPage.qml</file>
+        <file>Pages/Unzipping.qml</file>
+        <file>Pages/LastScreen.qml</file>
+        <file>Components/ServerBox.qml</file>
+        <file>Background/5.jpg</file>
+        <file>icon.ico</file>
     </qresource>
 </RCC>

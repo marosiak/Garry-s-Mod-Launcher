@@ -11,6 +11,10 @@ Page {
     property int progressValue: 0
     property int progressFrom: 0
     property int progressTo: 100
+    function restartSwipe(){
+        view.currentIndex = 0
+    }
+
     SwipeView {
         id: view
         currentIndex: 0
@@ -32,6 +36,9 @@ Page {
             source: "../Background/0.jpg"
         }
         Image {
+            source: "../Background/5.jpg"
+        }
+        Image {
             source: "../Background/1.jpg"
         }
         Image {
@@ -43,6 +50,7 @@ Page {
         Image {
             source: "../Background/4.jpg"
         }
+
     }
     Text {
         color: "#ffffff"
