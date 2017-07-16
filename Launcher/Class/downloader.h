@@ -18,28 +18,26 @@ class Downloader : public QObject
 public:
     explicit Downloader(QObject *parent = nullptr);
     QNetworkReply *reply;
-    QEventLoop eventLoop;
-
-
-    QString getDownloadUrl() const;
     QString getSteamFolder() const;
 
 
-    QString getDownloadName() const;
-
-
 signals:
-    void progressRecived(int curr, int max);
+    void progressRecived(int curr, int max, QString contentName);
+    void downloadingFinished(QString typ);
 public slots:
-    void startDownloading();
+    void startDownloading(QString typ);
     void networkReplyProgress(qint64 curr,qint64 max);
     void setDownloadUrl(const QString &value);
     void setSteamFolder(const QString &value);
     void setDownloadName(const QString &value);
+    void downloadingFinishedSlot();
+    QString getCurrDownloading() const;
 private:
     QString downloadUrl;
     QString steamFolder;
     QString downloadName;
+    QString currDownloading;
+    QEventLoop eventLoop;
 
 public slots:
 };
